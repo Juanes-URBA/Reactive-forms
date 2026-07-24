@@ -1,1 +1,126 @@
-<p>register-form works!</p>
+<div class="register-page">
+
+  <!-- FORMULARIO -->
+  <div class="register-card" *ngIf="!registerSummary">
+    <form [formGroup]="form">
+      <h2>Crear cuenta</h2>
+
+      <div class="form-group">
+        <label for="fullName">Nombre completo</label>
+        <input formControlName="fullName" id="fullName" type="text" placeholder="Ingrese su nombre">
+        <small *ngIf="isInvalid('fullName', 'required')" class="error">
+          El nombre completo es obligatorio.
+        </small>
+        <small *ngIf="isInvalid('fullName', 'minlength')" class="error">
+          El nombre debe tener mínimo 3 caracteres.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input formControlName="email" id="email" type="email" placeholder="correo@ejemplo.com">
+        <small *ngIf="isInvalid('email', 'required')" class="error">
+          El correo electrónico es obligatorio.
+        </small>
+        <small *ngIf="isInvalid('email', 'email')" class="error">
+          Ingresa un correo electrónico válido.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Nombre de usuario</label>
+        <input formControlName="username" id="username" type="text" placeholder="usuario_123">
+        <small *ngIf="isInvalid('username', 'required')" class="error">
+          El nombre de usuario es obligatorio.
+        </small>
+        <small *ngIf="isInvalid('username', 'pattern')" class="error">
+          Solo se permiten letras, números y guion bajo.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="password-wrapper">
+          <input
+            formControlName="password"
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="********">
+          <button type="button" class="toggle-btn" (click)="togglePasswordVisibility()">
+            {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+          </button>
+        </div>
+        <small *ngIf="isInvalid('password', 'required')" class="error">
+          La contraseña es obligatoria.
+        </small>
+        <small *ngIf="isInvalid('password', 'minlength')" class="error">
+          La contraseña debe tener mínimo 8 caracteres.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar contraseña</label>
+        <div class="password-wrapper">
+          <input
+            formControlName="confirmPassword"
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            placeholder="********">
+          <button type="button" class="toggle-btn" (click)="toggleConfirmPasswordVisibility()">
+            {{ showConfirmPassword ? 'Ocultar' : 'Mostrar' }}
+          </button>
+        </div>
+        <small *ngIf="isInvalid('confirmPassword', 'required')" class="error">
+          Debes confirmar la contraseña.
+        </small>
+        <small *ngIf="passwordMismatch" class="error">
+          Las contraseñas no coinciden.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Edad</label>
+        <input formControlName="age" id="age" type="number" placeholder="18">
+        <small *ngIf="isInvalid('age', 'required')" class="error">
+          La edad es obligatoria.
+        </small>
+        <small *ngIf="isInvalid('age', 'min')" class="error">
+          La edad mínima es de 15 años.
+        </small>
+        <small *ngIf="isInvalid('age', 'max')" class="error">
+          La edad máxima es de 90 años.
+        </small>
+      </div>
+
+      <div class="form-group checkbox-field">
+        <label>
+          <input formControlName="terms" type="checkbox">
+          Acepto los términos y condiciones
+        </label>
+        <small *ngIf="isInvalid('terms', 'required')" class="error">
+          Debes aceptar los términos y condiciones.
+        </small>
+      </div>
+
+      <button type="submit" (click)="onClick()" [disabled]="form.invalid">
+        Registrarse
+      </button>
+    </form>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="register-card summary" *ngIf="registerSummary">
+    <h2>¡Registro exitoso!</h2>
+    <ul>
+      <li><strong>Nombre completo:</strong> {{ registerSummary.fullName }}</li>
+      <li><strong>Correo electrónico:</strong> {{ registerSummary.email }}</li>
+      <li><strong>Nombre de usuario:</strong> {{ registerSummary.username }}</li>
+      <li><strong>Edad:</strong> {{ registerSummary.age }}</li>
+      <li><strong>Términos y condiciones:</strong> {{ registerSummary.terms ? 'Aceptados' : 'No aceptados' }}</li>
+    </ul>
+    <button type="button" (click)="onNewRegister()">
+      Registrar otro usuario
+    </button>
+  </div>
+
+</div>
